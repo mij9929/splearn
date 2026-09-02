@@ -1,0 +1,8 @@
+package com.codeit.splearn.domain;
+
+public record MemberCreateRequest(
+        String email,
+        String nickname,
+        String password
+) {
+}
