@@ -24,7 +24,7 @@ class MemberTest {
                 return encode(rawPassword).equals(passwordHash);
             }
         };
-        member = Member.create(new MemberCreateRequest("toby@spring","Toby", "secret"), passwordEncoder);
+        member = Member.create(new MemberCreateRequest("toby@spring.com","Toby", "secret"), passwordEncoder);
 
     }
 
@@ -35,7 +35,7 @@ class MemberTest {
 
     @Test
     void constructorNullCheck() {
-        assertThatThrownBy(() -> Member.create(new MemberCreateRequest("toby@spring","Toby", "secret"), passwordEncoder))
+        assertThatThrownBy(() -> Member.create(new MemberCreateRequest(null,"Toby", "secret"), passwordEncoder))
                 .isInstanceOf(NullPointerException.class);
     }
 
@@ -103,5 +103,13 @@ class MemberTest {
 
         assertThat(member.isActive()).isFalse();
     }
+
+    @Test
+    void invalidEmail() {
+        assertThatThrownBy(() -> Member.create(new MemberCreateRequest("Invalid Email","Toby", "secret"), passwordEncoder))
+                .isInstanceOf(IllegalArgumentException.class);
+//        Member.create(new MemberCreateRequest("toby@spring","Toby", "secret"), passwordEncoder);
+    }
+
 
 }
