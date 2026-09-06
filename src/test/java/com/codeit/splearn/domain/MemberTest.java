@@ -1,8 +1,11 @@
 package com.codeit.splearn.domain;
 
+import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import static com.codeit.splearn.domain.MemberFixture.createMemberRegisterRequest;
+import static com.codeit.splearn.domain.MemberFixture.createPasswordEncoder;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
@@ -13,29 +16,20 @@ class MemberTest {
 
     @BeforeEach
     void setUp() {
-        this.passwordEncoder = new PasswordEncoder() {
-            @Override
-            public String encode(String password) {
-                return password.toUpperCase();
-            }
-
-            @Override
-            public boolean matches(String rawPassword, String passwordHash) {
-                return encode(rawPassword).equals(passwordHash);
-            }
-        };
-        member = Member.create(new MemberCreateRequest("toby@spring.com","Toby", "secret"), passwordEncoder);
+        this.passwordEncoder = createPasswordEncoder();
+        member = Member.register(createMemberRegisterRequest(), passwordEncoder);
 
     }
 
+
     @Test
-    void createMember() {
+    void registerMember() {
         assertThat(member.getStatus()).isEqualTo(MemberStatus.PENDING);
     }
 
     @Test
     void constructorNullCheck() {
-        assertThatThrownBy(() -> Member.create(new MemberCreateRequest(null,"Toby", "secret"), passwordEncoder))
+        assertThatThrownBy(() -> Member.register(new MemberRegisterRequest(null,"Toby", "secret"), passwordEncoder))
                 .isInstanceOf(NullPointerException.class);
     }
 
@@ -106,10 +100,9 @@ class MemberTest {
 
     @Test
     void invalidEmail() {
-        assertThatThrownBy(() -> Member.create(new MemberCreateRequest("Invalid Email","Toby", "secret"), passwordEncoder))
+        assertThatThrownBy(() -> Member.register(createMemberRegisterRequest("Invalid Email"), passwordEncoder))
                 .isInstanceOf(IllegalArgumentException.class);
-//        Member.create(new MemberCreateRequest("toby@spring","Toby", "secret"), passwordEncoder);
+        Member.register(createMemberRegisterRequest(), passwordEncoder);
     }
-
 
 }
