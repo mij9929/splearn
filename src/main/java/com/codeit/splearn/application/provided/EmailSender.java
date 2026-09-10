@@ -1,8 +1,10 @@
 package com.codeit.splearn.application.provided;
 
+import com.codeit.splearn.domain.Email;
+
 /*
 이메일을 발송한다.
  */
 public interface EmailSender {
-    void send(String email, String subject, String body);
+    void send(Email email, String subject, String body);
 }
