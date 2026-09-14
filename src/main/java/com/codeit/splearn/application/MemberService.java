@@ -22,13 +22,13 @@ public class MemberService implements MemberRegister {
 
         memberRepository.save(member);
 
-        sendWelcomeEmail(member);
+        sendWelcomEmail(member);
 
         return member;
     }
 
-    private static Member sendWelcomeEmail(Member member) {
-        return member;
+    private void sendWelcomEmail(Member member) {
+        emailSender.send(member.getEmail(), "등록을 완료해주세요", "아래 링크를 클릭해서 등록을 완료해주세요");
     }
 
     private void checkDuplicateEmail(MemberRegisterRequest request) {
