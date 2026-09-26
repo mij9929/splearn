@@ -1,18 +1,16 @@
 package com.codeit.splearn.application.provided;
 
 import com.codeit.splearn.SplearnTestConfiguration;
-import com.codeit.splearn.domain.DuplicateEmailException;
-import com.codeit.splearn.domain.Member;
-import com.codeit.splearn.domain.MemberFixture;
-import com.codeit.splearn.domain.MemberStatus;
+import com.codeit.splearn.domain.*;
 import jakarta.transaction.Transactional;
+import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
-import org.springframework.test.context.TestConstructor;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @SpringBootTest
 @Import(SplearnTestConfiguration.class)
@@ -33,6 +31,18 @@ public record MemberRegisterTest(MemberRegister memberRegister) {
 
         assertThatThrownBy(() -> memberRegister.register(MemberFixture.createMemberRegisterRequest()))
                 .isInstanceOf(DuplicateEmailException.class);
+    }
+
+    @Test
+    void memberRegisterRequestFail() {
+        extracted(new MemberRegisterRequest("toby@splearn.app", "Toby", "long secret"));
+        extracted(new MemberRegisterRequest("toby@splearn.app", "Toby~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", "long-secret"));
+        extracted(new MemberRegisterRequest("tobysplearn.app", "Toby", "long-secret"));
+    }
+
+    private void extracted(MemberRegisterRequest invalid) {
+        assertThatThrownBy(() -> memberRegister.register(invalid))
+                .isInstanceOf(ConstraintViolationException.class);
     }
 
 }

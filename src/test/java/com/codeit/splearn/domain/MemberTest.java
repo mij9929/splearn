@@ -1,6 +1,5 @@
 package com.codeit.splearn.domain;
 
-import org.jspecify.annotations.NonNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -68,21 +67,21 @@ class MemberTest {
 
     @Test
     void verifyPassword() {
-        assertThat(member.verifyPassword("secret",  passwordEncoder)).isTrue();
+        assertThat(member.verifyPassword("verysecret",  passwordEncoder)).isTrue();
         assertThat(member.verifyPassword("wrong", passwordEncoder)).isFalse();
     }
 
     @Test
     void changeNickname() {
-        assertThat(member.getNickname()).isEqualTo("Toby");
-        member.changeNickname("Charlie");
         assertThat(member.getNickname()).isEqualTo("Charlie");
+        member.changeNickname("Charlie2");
+        assertThat(member.getNickname()).isEqualTo("Charlie2");
     }
 
     @Test
     void changePassword() {
-        member.changePassword("verysecret", passwordEncoder);
-        assertThat(member.verifyPassword("verysecret", passwordEncoder)).isTrue();
+        member.changePassword("verysecret2", passwordEncoder);
+        assertThat(member.verifyPassword("verysecret2", passwordEncoder)).isTrue();
     }
 
     @Test

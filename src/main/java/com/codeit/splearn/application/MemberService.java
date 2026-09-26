@@ -4,10 +4,14 @@ import com.codeit.splearn.application.provided.EmailSender;
 import com.codeit.splearn.application.provided.MemberRegister;
 import com.codeit.splearn.application.required.MemberRepository;
 import com.codeit.splearn.domain.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 @Service
+@Transactional
+@Validated
 @RequiredArgsConstructor
 public class MemberService implements MemberRegister {
     private final MemberRepository memberRepository;
