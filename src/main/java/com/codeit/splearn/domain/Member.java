@@ -12,7 +12,7 @@ import static java.util.Objects.requireNonNull;
 
 @Entity
 @Getter
-@ToString
+@ToString(callSuper = true) // 현재 클래스의 toString()을 만들 때 부모 클래스의 toString() 결과도 포함해라는 뜻
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends AbstractEntity {
     @NaturalId
