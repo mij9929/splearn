@@ -1,10 +1,14 @@
-package com.codeit.splearn.application;
+package com.codeit.splearn.application.member;
 
-import com.codeit.splearn.application.provided.EmailSender;
-import com.codeit.splearn.application.provided.MemberFinder;
-import com.codeit.splearn.application.provided.MemberRegister;
-import com.codeit.splearn.application.required.MemberRepository;
-import com.codeit.splearn.domain.*;
+import com.codeit.splearn.application.member.provided.EmailSender;
+import com.codeit.splearn.application.member.provided.MemberFinder;
+import com.codeit.splearn.application.member.provided.MemberRegister;
+import com.codeit.splearn.application.member.required.MemberRepository;
+import com.codeit.splearn.domain.member.DuplicateEmailException;
+import com.codeit.splearn.domain.member.Member;
+import com.codeit.splearn.domain.member.MemberRegisterRequest;
+import com.codeit.splearn.domain.member.PasswordEncoder;
+import com.codeit.splearn.domain.shared.Email;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

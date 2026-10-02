@@ -1,7 +1,7 @@
-package com.codeit.splearn.application.provided;
+package com.codeit.splearn.application.member.provided;
 
-import com.codeit.splearn.domain.Member;
-import com.codeit.splearn.domain.MemberRegisterRequest;
+import com.codeit.splearn.domain.member.Member;
+import com.codeit.splearn.domain.member.MemberRegisterRequest;
 import jakarta.validation.Valid;
 
 /*

@@ -1,8 +1,8 @@
-package com.codeit.splearn.application.provided;
+package com.codeit.splearn.application.member.provided;
 
 import com.codeit.splearn.SplearnTestConfiguration;
-import com.codeit.splearn.domain.Member;
 import com.codeit.splearn.domain.MemberFixture;
+import com.codeit.splearn.domain.member.Member;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;

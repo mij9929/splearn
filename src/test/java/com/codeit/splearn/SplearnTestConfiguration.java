@@ -1,8 +1,8 @@
 package com.codeit.splearn;
 
-import com.codeit.splearn.application.provided.EmailSender;
+import com.codeit.splearn.application.member.provided.EmailSender;
 import com.codeit.splearn.domain.MemberFixture;
-import com.codeit.splearn.domain.PasswordEncoder;
+import com.codeit.splearn.domain.member.PasswordEncoder;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 

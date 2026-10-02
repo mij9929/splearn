@@ -1,5 +1,6 @@
 package com.codeit.splearn.domain;
 
+import com.codeit.splearn.domain.shared.Email;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

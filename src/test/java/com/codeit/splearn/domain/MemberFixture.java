@@ -1,5 +1,8 @@
 package com.codeit.splearn.domain;
 
+import com.codeit.splearn.domain.member.MemberRegisterRequest;
+import com.codeit.splearn.domain.member.PasswordEncoder;
+
 public class MemberFixture {
     public static MemberRegisterRequest createMemberRegisterRequest(String email) {
         return new MemberRegisterRequest(email, "Charlie", "verysecret");

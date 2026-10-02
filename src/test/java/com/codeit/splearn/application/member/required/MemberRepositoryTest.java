@@ -1,7 +1,8 @@
-package com.codeit.splearn.application.required;
+package com.codeit.splearn.application.member.required;
 
-import com.codeit.splearn.domain.Member;
 import com.codeit.splearn.domain.MemberFixture;
+import com.codeit.splearn.domain.member.Member;
+import com.codeit.splearn.domain.member.MemberStatus;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,12 @@ class MemberRepositoryTest {
         assertThat(member.getId()).isNotNull();
 
         entityManager.flush();
+        entityManager.clear();
+
+        var found = memberRepository.findById(member.getId()).orElseThrow();
+
+        assertThat(found.getStatus()).isEqualTo(MemberStatus.PENDING);
+        assertThat(found.getDetail().getRegisteredAt()).isNotNull();
     }
 
     @Test

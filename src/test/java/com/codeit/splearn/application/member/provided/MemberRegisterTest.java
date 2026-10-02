@@ -1,7 +1,11 @@
-package com.codeit.splearn.application.provided;
+package com.codeit.splearn.application.member.provided;
 
 import com.codeit.splearn.SplearnTestConfiguration;
-import com.codeit.splearn.domain.*;
+import com.codeit.splearn.domain.MemberFixture;
+import com.codeit.splearn.domain.member.DuplicateEmailException;
+import com.codeit.splearn.domain.member.Member;
+import com.codeit.splearn.domain.member.MemberRegisterRequest;
+import com.codeit.splearn.domain.member.MemberStatus;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;

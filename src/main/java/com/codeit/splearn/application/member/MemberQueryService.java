@@ -1,8 +1,8 @@
-package com.codeit.splearn.application;
+package com.codeit.splearn.application.member;
 
-import com.codeit.splearn.application.provided.MemberFinder;
-import com.codeit.splearn.application.required.MemberRepository;
-import com.codeit.splearn.domain.Member;
+import com.codeit.splearn.application.member.provided.MemberFinder;
+import com.codeit.splearn.application.member.required.MemberRepository;
+import com.codeit.splearn.domain.member.Member;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

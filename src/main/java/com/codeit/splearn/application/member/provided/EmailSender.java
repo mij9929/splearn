@@ -1,6 +1,6 @@
-package com.codeit.splearn.application.provided;
+package com.codeit.splearn.application.member.provided;
 
-import com.codeit.splearn.domain.Email;
+import com.codeit.splearn.domain.shared.Email;
 
 /*
 이메일을 발송한다.

@@ -1,4 +1,4 @@
-package com.codeit.splearn.domain;
+package com.codeit.splearn.domain.member;
 
 public interface PasswordEncoder {
     String encode(String password);

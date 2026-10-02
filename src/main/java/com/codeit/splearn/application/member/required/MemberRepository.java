@@ -1,7 +1,7 @@
-package com.codeit.splearn.application.required;
+package com.codeit.splearn.application.member.required;
 
-import com.codeit.splearn.domain.Email;
-import com.codeit.splearn.domain.Member;
+import com.codeit.splearn.domain.member.Member;
+import com.codeit.splearn.domain.shared.Email;
 import org.springframework.data.repository.Repository;
 
 import java.util.Optional;
