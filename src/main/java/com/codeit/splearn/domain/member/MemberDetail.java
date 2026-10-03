@@ -1,7 +1,6 @@
 package com.codeit.splearn.domain.member;
 
 import com.codeit.splearn.domain.AbstractEntity;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -17,7 +16,6 @@ import java.util.Objects;
 @ToString(callSuper = true) // 현재 클래스의 toString()을 만들 때 부모 클래스의 toString() 결과도 포함해라는 뜻
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberDetail extends AbstractEntity {
-    @Embedded
     private Profile profile;
 
     private String introduction;

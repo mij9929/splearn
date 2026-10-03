@@ -4,10 +4,7 @@ import com.codeit.splearn.application.member.provided.EmailSender;
 import com.codeit.splearn.application.member.provided.MemberFinder;
 import com.codeit.splearn.application.member.provided.MemberRegister;
 import com.codeit.splearn.application.member.required.MemberRepository;
-import com.codeit.splearn.domain.member.DuplicateEmailException;
-import com.codeit.splearn.domain.member.Member;
-import com.codeit.splearn.domain.member.MemberRegisterRequest;
-import com.codeit.splearn.domain.member.PasswordEncoder;
+import com.codeit.splearn.domain.member.*;
 import com.codeit.splearn.domain.shared.Email;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +29,7 @@ public class MemberModifyService implements MemberRegister {
 
         memberRepository.save(member);
 
-        sendWelcomEmail(member);
+        sendWelcomeEmail(member);
 
         return member;
     }
@@ -47,7 +44,24 @@ public class MemberModifyService implements MemberRegister {
 
     }
 
-    private void sendWelcomEmail(Member member) {
+    public Member deactivate(Long memberId) {
+        Member member = memberFinder.find(memberId);
+
+        member.deactivate();
+
+        return memberRepository.save(member);
+    }
+
+    @Override
+    public Member updateInfo(Long memberId, MemberInfoUpdateRequest request) {
+        Member member = memberFinder.find(memberId);
+
+        member.updateInfo(request);
+
+        return memberRepository.save(member);
+    }
+
+    private void sendWelcomeEmail(Member member) {
         emailSender.send(member.getEmail(), "등록을 완료해주세요", "아래 링크를 클릭해서 등록을 완료해주세요");
     }
 
@@ -56,6 +70,4 @@ public class MemberModifyService implements MemberRegister {
             throw new DuplicateEmailException("이미 사용중인 이메일입니다." + request.email());
         }
     }
-
-
 }

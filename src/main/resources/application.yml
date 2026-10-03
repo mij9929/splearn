@@ -4,3 +4,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+  docker:
+    compose:
+      lifecycle-management: start_only
+      # Spring Boot가 시작될 때 Docker Compose 컨테이너가 실행 중이 아니면 시작하고, Spring Boot 애플리케이션이 종료되어도 컨테이너는 종료하지 않는다.

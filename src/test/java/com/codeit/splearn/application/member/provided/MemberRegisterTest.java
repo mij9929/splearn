@@ -2,10 +2,7 @@ package com.codeit.splearn.application.member.provided;
 
 import com.codeit.splearn.SplearnTestConfiguration;
 import com.codeit.splearn.domain.MemberFixture;
-import com.codeit.splearn.domain.member.DuplicateEmailException;
-import com.codeit.splearn.domain.member.Member;
-import com.codeit.splearn.domain.member.MemberRegisterRequest;
-import com.codeit.splearn.domain.member.MemberStatus;
+import com.codeit.splearn.domain.member.*;
 import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolationException;
@@ -39,30 +36,61 @@ record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityMan
     }
 
     @Test
-    void memberRegisterRequestFail() {
-        checkValidation(new MemberRegisterRequest("toby@splearn.app", "Toby", "long secret"));
-        checkValidation(new MemberRegisterRequest("toby@splearn.app", "Toby~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", "long-secret"));
-        checkValidation(new MemberRegisterRequest("tobysplearn.app", "Toby", "long-secret"));
-    }
-
-    @Test
     void activated() {
-        Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
-        entityManager.flush();
-        entityManager.clear();
+        Member member = registerMember();
 
         member = memberRegister.activate(member.getId());
 
         entityManager.flush();
 
         assertThat(member.getStatus()).isEqualTo(MemberStatus.ACTIVE);
+    }
 
+    @Test
+    void deactivated() {
+        Member member = registerMember();
 
+        member = memberRegister.activate(member.getId());
+        entityManager.flush();
+        entityManager.clear();
+
+        member = memberRegister.deactivate(member.getId());
+
+        assertThat(member.getStatus()).isEqualTo(MemberStatus.DEACTIVATED);
+        assertThat(member.getDetail().getDeactivatedAt()).isNotNull();
+    }
+
+    private Member registerMember() {
+        Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest());
+
+        entityManager.flush();
+        entityManager.clear();
+        return member;
+    }
+
+    @Test
+    void update() {
+        Member member = registerMember();
+
+        memberRegister.activate(member.getId());
+        entityManager.flush();
+        entityManager.clear();
+
+        memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("Peter", "toby100", "자기 소개"));
+        entityManager.flush();
+        entityManager.clear();
+    }
+
+    @Test
+    void memberRegisterRequestFail() {
+        checkValidation(new MemberRegisterRequest("toby@splearn.app", "Toby", "long secret"));
+        checkValidation(new MemberRegisterRequest("toby@splearn.app", "Toby~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", "long-secret"));
+        checkValidation(new MemberRegisterRequest("tobysplearn.app", "Toby", "long-secret"));
     }
 
     private void checkValidation(MemberRegisterRequest invalid) {
         assertThatThrownBy(() -> memberRegister.register(invalid))
                 .isInstanceOf(ConstraintViolationException.class);
     }
-
+    
 }
