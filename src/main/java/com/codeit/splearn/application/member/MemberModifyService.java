@@ -7,7 +7,6 @@ import com.codeit.splearn.application.member.required.MemberRepository;
 import com.codeit.splearn.domain.member.*;
 import com.codeit.splearn.domain.shared.Email;
 import jakarta.transaction.Transactional;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
