@@ -7,6 +7,7 @@ import com.codeit.splearn.application.member.required.MemberRepository;
 import com.codeit.splearn.domain.member.*;
 import com.codeit.splearn.domain.shared.Email;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -55,10 +56,23 @@ public class MemberModifyService implements MemberRegister {
     @Override
     public Member updateInfo(Long memberId, MemberInfoUpdateRequest request) {
         Member member = memberFinder.find(memberId);
+        
+        checkDuplicateProfile(member, request.profileAddress());
 
         member.updateInfo(request);
 
         return memberRepository.save(member);
+    }
+
+    private void checkDuplicateProfile(Member member, String profileAddress) {
+        if (profileAddress.isEmpty()) return;
+
+        Profile currentProfile = member.getDetail().getProfile();
+        if (currentProfile != null && currentProfile.address().equals(profileAddress)) return;
+
+        if(memberRepository.findByProfile(new Profile(profileAddress)).isPresent()) {
+            throw new DuplicationProfileException("이미 존재하는 프로필 주소입니다.: " + profileAddress );
+        }
     }
 
     private void sendWelcomeEmail(Member member) {

@@ -68,8 +68,16 @@ record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityMan
         return member;
     }
 
+    private Member registerMember(String email) {
+        Member member = memberRegister.register(MemberFixture.createMemberRegisterRequest(email));
+
+        entityManager.flush();
+        entityManager.clear();
+        return member;
+    }
+
     @Test
-    void update() {
+    void updateInfo() {
         Member member = registerMember();
 
         memberRegister.activate(member.getId());
@@ -79,6 +87,31 @@ record MemberRegisterTest(MemberRegister memberRegister, EntityManager entityMan
         memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("Peter", "toby100", "자기 소개"));
         entityManager.flush();
         entityManager.clear();
+    }
+
+    @Test
+    void updateInfoFail() {
+        Member member = registerMember();
+        memberRegister.activate(member.getId());
+        memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("Peter", "toby100", "자기 소개"));
+
+        Member member2 = registerMember("toby2@splearn.app");
+        memberRegister.activate(member2.getId());
+        entityManager.flush();
+        entityManager.clear();
+
+        assertThatThrownBy(() -> {
+            memberRegister.updateInfo(member2.getId(), new MemberInfoUpdateRequest("James", "toby100", "introduction"));
+        }).isInstanceOf(DuplicationProfileException.class);
+
+        memberRegister.updateInfo(member2.getId(), new MemberInfoUpdateRequest("James", "toby101", "introduction"));
+
+        memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("James", "toby100", "introduction"));
+        memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("James", "", "introduction"));
+
+        assertThatThrownBy(() -> {
+            memberRegister.updateInfo(member.getId(), new MemberInfoUpdateRequest("James", "toby101", "introduction"));
+        }).isInstanceOf(DuplicationProfileException.class);
     }
 
     @Test

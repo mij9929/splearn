@@ -13,6 +13,7 @@ import org.springframework.util.Assert;
 import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
+import static org.springframework.util.Assert.state;
 
 @Entity
 @Getter
@@ -46,14 +47,14 @@ public class Member extends AbstractEntity {
 
 
     public void activate() {
-        Assert.state(status == MemberStatus.PENDING, "PENDING 상태가 아닙니다.");
+        state(status == MemberStatus.PENDING, "PENDING 상태가 아닙니다.");
 
         this.status = MemberStatus.ACTIVE;
         this.detail.setActivatedAt();
     }
 
     public void deactivate() {
-        Assert.state(status == MemberStatus.ACTIVE, "ACTIVE 상태가 아닙니다.");
+        state(status == MemberStatus.ACTIVE, "ACTIVE 상태가 아닙니다.");
 
         this.status = MemberStatus.DEACTIVATED;
         this.detail.deactivate();
@@ -63,11 +64,9 @@ public class Member extends AbstractEntity {
         return passwordEncoder.matches(password, passwordHash);
     }
 
-    public void changeNickname(String nickname) {
-        this.nickname = requireNonNull(nickname);
-    }
-
     public void updateInfo(MemberInfoUpdateRequest updateRequest) {
+        state(getStatus() == MemberStatus.ACTIVE, "등록 완료 상태가 아니면 정보를 수정할 수 없음");
+
         this.nickname = Objects.requireNonNull(updateRequest.nickname());
         this.detail.updateinfo(updateRequest);
 
